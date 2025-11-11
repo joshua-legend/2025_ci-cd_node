@@ -1,0 +1,2 @@
+name:모찌빵,price:12000
+name:두바이쫀득쿠키,price:10000
