@@ -1,6 +1,6 @@
-const { ramens } = require("./data");
-
+const { ramens, reviews } = require("./data");
 const express = require("express");
+const { v4 } = require("uuid");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,14 +28,14 @@ app.post("/ramens", (req, res) => {
   if (!name || !brand || !soupType || !spicyLevel) res.json(`보낸 데이터가 유효하지 않습니다.`);
   else if (spicyLevel < 1 || 5 < spicyLevel) res.json(`spicyLevel 유효 하지 않습니다.(1~5 사이)`);
   else {
-    ramens.push({ id: ramens.length, name, brand, soupType, spicyLevel });
+    ramens.push({ id: v4(), name, brand, soupType, spicyLevel });
     res.json(`${name} 라면 등록되었습니다!`);
   }
 });
 
 app.delete("/ramens/:id", (req, res) => {
   const { id } = req.params;
-  const targetIndex = ramens.findIndex((v) => v.id == +id);
+  const targetIndex = ramens.findIndex((v) => v.id == id);
   if (targetIndex == -1) {
     res.status(404).json({ msg: `${id} 라면이 없습니다.` });
     return;
@@ -46,7 +46,7 @@ app.delete("/ramens/:id", (req, res) => {
 
 app.put("/ramens/:id", (req, res) => {
   const { id } = req.params;
-  const targetIndex = ramens.findIndex((v) => v.id == +id);
+  const targetIndex = ramens.findIndex((v) => v.id == id);
   if (targetIndex == -1) {
     res.status(404).json({ msg: `${id} 라면이 없습니다.` });
     return;
@@ -56,6 +56,32 @@ app.put("/ramens/:id", (req, res) => {
   ramens[targetIndex].brand = brand || ramens[targetIndex].brand;
   ramens[targetIndex].spicyLevel = spicyLevel || ramens[targetIndex].spicyLevel;
   res.json({ msg: `${id} 라면이 수정되었습니다.` });
+});
+
+app.get("/ramens/:id/reviews", (req, res) => {
+  const { id } = req.params;
+  const targetIndex = ramens.findIndex((v) => v.id == id);
+  if (targetIndex == -1) {
+    res.status(400).json({ msg: "해당 라면은 존재하지 않습니다." });
+    return;
+  }
+  const targets = reviews.filter((v) => v.ramenID == id);
+  res.json(targets);
+});
+
+app.post("/reviews", (req, res) => {
+  const { nickname, contents, ramenID } = req.body;
+  if (!nickname || !contents || !ramenID) {
+    res.status(400).json({ msg: "데이터가 유효하지 않습니다." });
+    return;
+  }
+  const targetIndex = ramens.findIndex((v) => v.id == ramenID);
+  if (targetIndex == -1) {
+    res.status(400).json({ msg: "해당 라면은 존재하지 않습니다." });
+    return;
+  }
+  reviews.push({ id: v4(), nickname, contents, ramenID });
+  res.json({ msg: "댓글이 생성되었습니다!" });
 });
 
 app.listen(3000, () => {
