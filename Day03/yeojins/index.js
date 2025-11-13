@@ -12,7 +12,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/members", (req, res) => {
-  // position
   const { position } = req.query;
   if (position) {
     res.json(members.filter((v) => v.position == position));
