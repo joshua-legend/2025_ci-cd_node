@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import movieRoutes from "./src/routes/movie.routes.js";
+import reviewRoutes from "./src/routes/review.routes.js";
 import { responseMiddleware } from "./src/middleware/response.middleware.js";
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(responseMiddleware);
 
 // 라우터
 app.use("/movies", movieRoutes);
+app.use("/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.json({
@@ -25,6 +27,14 @@ app.get("/", (req, res) => {
         list: "GET /movies",
         search: "GET /movies?name=제목",
         detail: "GET /movies/:id",
+        delete: "DELETE /movies/:id",
+        update: "PUT /movies/:id",
+      },
+      reviews: {
+        list: "GET /reviews/movie/:movieID",
+        create: "POST /reviews",
+        update: "PUT /reviews/:id",
+        delete: "DELETE /reviews/:id",
       },
     },
   });

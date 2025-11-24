@@ -17,7 +17,7 @@ model movies {
 
 model reviews {
   id       Int     @id @default(autoincrement())
-  contents String  @db.VarChar(255)
+  contents String  @db.Text
   movie_id Int?
   movies   movies? @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reviews_ibfk_1")
 
