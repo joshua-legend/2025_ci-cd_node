@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model movies {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(200)
+  rating  Float     @default(1)
+  reviews reviews[]
+}
+
+model reviews {
+  id       Int     @id @default(autoincrement())
+  contents String  @db.VarChar(255)
+  movie_id Int?
+  movies   movies? @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reviews_ibfk_1")
+
+  @@index([movie_id], map: "movie_id")
+}

@@ -1,0 +1,24 @@
+{
+  "name": "final",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "서버 최적화 코드 완성본",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "pg": "npx prisma generate",
+    "pp": "npx prisma db pull",
+    "ps": "npx prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "prisma": "^6.19.0"
+  }
+}
