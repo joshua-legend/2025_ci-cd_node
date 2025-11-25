@@ -1,4 +1,4 @@
-import { MovieRepository } from "../repository/movie.repository";
+import { MovieRepository } from "../repository/movie.repository.js";
 
 export const getMovies = async (req, res) => {
   const { name } = req.query;
