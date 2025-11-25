@@ -1,4 +1,4 @@
-import { movieParamsSchema } from "../schema/movie.schema.js";
+import { movieBodyschema, movieParamsSchema } from "../schema/movie.schema.js";
 
 export const movieParamsValidator = (req, res, next) => {
   const { error } = movieParamsSchema.validate(req.params);
